@@ -1,0 +1,18 @@
+.box {
+    width: 20px;
+    height: 20px;
+    background-color: seagreen;
+}
+
+.piece {
+    position: absolute; 
+}
+
+.gamearea {
+    height: 75vh;
+    width: 40%;
+    margin: auto;
+    border: 2px;
+    border-style: solid;
+    border-color: black;
+}
