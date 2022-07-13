@@ -3,30 +3,30 @@ let gameArea = document.querySelector(".gamearea")
 let play = true
 
 let i = 1
-
+ 
 let repeat = () => {
-
+    //// create multiple pieces
     let piece = gameArea.insertAdjacentElement("afterbegin", document.createElement("div"))
     
     piece.innerHTML = `
-        <div class="piece">
-            <div class="box"></div>
-            <div class="box"></div>
-            <div class="box"></div>
-            <div class="box"></div>
-        </div>
+        
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+        <div class="box"></div>
+       
     `
 
     piece.classList.add("piece")
 
     piece.id = `${i}`
     
-    piece.style.transform = `translateX(${(gameArea.clientWidth - piece.clientWidth) / 2}px)`
+    piece.style.transform = `translateX(80px)`
 
     const duration = 10000;
     let starttime = null;
     let move = gameArea.clientHeight - piece.getBoundingClientRect().height
-    let x = (gameArea.clientWidth - piece.clientWidth) / 2
+    let x = 80
     let rotate = 0
     let amount = 0
     
@@ -40,11 +40,11 @@ let repeat = () => {
             console.log(e.key)
         
                 if (e.key === "ArrowRight") {
-                    x += 10  
+                    x += 20  
                 }
     
                 if (e.key === "ArrowLeft") {
-                    x -= 10  
+                    x -= 20 
                 }
     
                 if (e.key === " ") {

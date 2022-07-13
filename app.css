@@ -9,10 +9,26 @@
 }
 
 .gamearea {
-    height: 75vh;
-    width: 40%;
+    height: 400px;
+    width: 200px;
     margin: auto;
     border: 2px;
     border-style: solid;
     border-color: black;
+}
+
+.board {
+    width: 200px;
+    height: 400px;
+    background-color: yellow;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.board div {
+    width: 20px;
+    height: 20px;
+    background-color: teal;
+
 }
