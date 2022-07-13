@@ -6,31 +6,11 @@ let i = 1
  
 let repeat = () => {
     //// create multiple pieces
-    let piece = gameArea.insertAdjacentElement("afterbegin", document.createElement("div"))
-    
-    piece.innerHTML = `
-        
-        <div class="box"></div>
-        <div class="box"></div>
-        <div class="box"></div>
-        <div class="box"></div>
-       
-    `
 
-    piece.classList.add("piece")
-
-    piece.id = `${i}`
-    
-    piece.style.transform = `translateX(80px)`
-
-    const duration = 10000;
+    const duration = 1000;
     let starttime = null;
-    let move = gameArea.clientHeight - piece.getBoundingClientRect().height
-    let x = 80
-    let rotate = 0
-    let amount = 0
-    
-    let arrowDown = (timestamp) => {
+    draw()
+    let autoDown = (timestamp) => {
     
         if (!starttime) {
             starttime = timestamp;
@@ -40,40 +20,42 @@ let repeat = () => {
             console.log(e.key)
         
                 if (e.key === "ArrowRight") {
-                    x += 20  
+                    // make into function?
+                    undraw()
+                    currentPosition += 1
+                    draw() 
                 }
     
                 if (e.key === "ArrowLeft") {
-                    x -= 20 
+                    // make into function?
+                    undraw()
+                    currentPosition -= 1
+                    draw()
                 }
     
                 if (e.key === " ") {
-                    rotate += 90
-                    /// shifts piece down by half the original height
-                    move = gameArea.clientHeight - (piece.getBoundingClientRect().height/2) - (piece.getBoundingClientRect().width/2)
-    
-                    /// take into account multiple rotations - deal with 90/180/270/360
+                    undraw()
+                    // update current
+                    draw()       
                 }
     
         }
     
-        const runtime = timestamp - starttime;
-    
-        const relativeProgress = runtime / duration;
-    
-        amount =  move * (Math.min(relativeProgress, 1));
-    
-        piece.style.transform = `translateX(${x}px) translateY(${amount}px) rotate(${rotate}deg)`
+        let runtime = timestamp - starttime;
+
       
         if (runtime < duration) {
-            requestAnimationFrame(arrowDown);
+            requestAnimationFrame(autoDown);
         } else {
             i++
+            undraw()
+            currentPosition += lineWidth
+            draw()
             requestAnimationFrame(repeat)
         }
     }
 
-    requestAnimationFrame(arrowDown)
+    requestAnimationFrame(autoDown)
 
 
 }

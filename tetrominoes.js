@@ -6,7 +6,7 @@ const lTetromino = [
     [1, lineWidth+1, lineWidth*2+1, lineWidth*2+2],
     [lineWidth, lineWidth+1, lineWidth+2, lineWidth*2],
     [0, 1, lineWidth+1, lineWidth*2+1],
-    [3, lineWidth, lineWidth+1, lineWidth+2]
+    [2, lineWidth, lineWidth+1, lineWidth+2]
 ]
 
 const rlTetromino = [

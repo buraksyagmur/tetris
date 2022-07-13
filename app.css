@@ -1,4 +1,4 @@
-.box {
+/* .box {
     width: 20px;
     height: 20px;
     background-color: seagreen;
@@ -15,12 +15,13 @@
     border: 2px;
     border-style: solid;
     border-color: black;
-}
+} */
 
 .board {
     width: 200px;
     height: 400px;
-    background-color: yellow;
+    border-style: double;
+    border-color: black;
     margin: auto;
     display: flex;
     flex-wrap: wrap;
@@ -29,6 +30,8 @@
 .board div {
     width: 20px;
     height: 20px;
-    background-color: teal;
+}
 
+.tetromino {
+    background-color: seagreen;
 }
