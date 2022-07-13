@@ -1,8 +1,9 @@
-let start = document.querySelector("#start-button")
+const startBtn = document.querySelector("#start-button")
+const scoreDisplay = document.querySelector("#score")
 let request = null
 document.addEventListener("DOMContentLoaded", () => {
     //// create pause
-    start.addEventListener("click", () => {
+    startBtn.addEventListener("click", () => {
         if (request != null) {
            
         } else {
