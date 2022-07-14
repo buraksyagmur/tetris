@@ -10,6 +10,7 @@ let repeat = () => {
     const duration = 1000;
     let starttime = null;
     draw()
+    
     let autoDown = (timestamp) => {
     
         if (!starttime) {
@@ -23,6 +24,12 @@ let repeat = () => {
                     // make into function?
                     undraw()
                     currentPosition += 1
+                    current.some(index => {
+                        if (squares[currentPosition + index].classList.contains("taken")) {
+                        /// if right position is taken
+                        currentPosition--
+                        }
+                    })
                     draw() 
                 }
     
@@ -30,12 +37,23 @@ let repeat = () => {
                     // make into function?
                     undraw()
                     currentPosition -= 1
+                    current.some(index => {
+                        if (squares[currentPosition + index].classList.contains("taken")) {
+                        /// if right position is taken
+                        currentPosition++
+                        }
+                    })
                     draw()
                 }
     
                 if (e.key === " ") {
                     undraw()
                     // update current
+                    currentRotation++
+                    if (currentRotation === 4) {
+                        currentRotation = 0
+                    }
+                    current = current = tetrominos[randomTetromino][currentRotation]
                     draw()       
                 }
     
@@ -51,6 +69,7 @@ let repeat = () => {
             undraw()
             currentPosition += lineWidth
             draw()
+            
             requestAnimationFrame(repeat)
         }
     }

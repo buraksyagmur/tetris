@@ -14,17 +14,26 @@ let current = tetrominos[randomTetromino][currentRotation]
 let draw = () => {
     current.forEach(index => { 
 
-        ///outside of board -- not complete
-        if (squares[currentPosition + index] === undefined) {
-            // undraw()
-            currentPosition -= lineWidth
-            draw()
+        if (squares[currentPosition + index + lineWidth].classList.contains("taken")) {
+            /// if next position is taken
+            freeze()
+            // create new tetromino
             currentPosition = 3
+            randomTetromino = Math.floor(Math.random()*tetrominos.length)
+            current = tetrominos[randomTetromino][currentRotation]
             return
         } else {
             squares[currentPosition + index].classList.add("tetromino")
         }
         
+    })
+}
+
+/// fix the position of the tetromino
+let freeze = () => {
+    current.forEach(index => {
+        squares[currentPosition + index].classList.add("tetromino")
+        squares[currentPosition + index].classList.add("taken")
     })
 }
 
