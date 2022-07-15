@@ -1,11 +1,11 @@
 let play = true
 
 let i = 1
-let duration;
+ 
 let repeat = () => {
     //// create multiple pieces
 
-    duration = 100;
+    const duration = 1000;
     let starttime = null;
     draw()
     
@@ -20,7 +20,6 @@ let repeat = () => {
         
                 if (e.key === "ArrowRight") {
                     // make into function?
-                    // if ()
                     undraw()
                     currentPosition += 1
                     current.some(index => {
@@ -55,11 +54,7 @@ let repeat = () => {
                     current = current = tetrominos[randomTetromino][currentRotation]
                     draw()       
                 }
-                if (e.key === "ArrowDown") {
-                    undraw()
-                    // change duration
-                    draw()
-                }
+    
         }
     
         let runtime = timestamp - starttime;
