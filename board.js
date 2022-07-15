@@ -12,21 +12,18 @@ let current = tetrominos[randomTetromino][currentRotation]
 
 // draw tetromino onto the board
 let draw = () => {
-    current.forEach(index => { 
-
-        if (squares[currentPosition + index + lineWidth].classList.contains("taken")) {
-            /// if next position is taken
-            freeze()
-            // create new tetromino
-            currentPosition = 3
-            randomTetromino = Math.floor(Math.random()*tetrominos.length)
-            current = tetrominos[randomTetromino][currentRotation]
-            return
-        } else {
+    if (current.some(index => squares[currentPosition + index + lineWidth].classList.contains("taken"))) {
+        /// if next position is taken
+        freeze()
+        // create new tetromino
+        currentPosition = 3
+        randomTetromino = Math.floor(Math.random()*tetrominos.length)
+        current = tetrominos[randomTetromino][currentRotation]
+    } else {
+        current.forEach(index => { 
             squares[currentPosition + index].classList.add("tetromino")
-        }
-        
-    })
+        })
+    }  
 }
 
 /// fix the position of the tetromino

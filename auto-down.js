@@ -1,5 +1,3 @@
-let gameArea = document.querySelector(".gamearea")
-
 let play = true
 
 let i = 1
