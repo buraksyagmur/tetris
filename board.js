@@ -1,3 +1,39 @@
+"use strict";
+
+const body = document.querySelector("body");
+const wrapper = document.querySelector(".wrapper");
+
+const box1 = document.createElement("div");
+const box2 = document.createElement("div");
+const box3 = document.createElement("div");
+
+wrapper.append(box1);
+wrapper.append(box2);
+wrapper.append(box3);
+
+const gameTable = document.createElement("div");
+gameTable.classList.add("board");
+box2.append(gameTable);
+
+// create game area
+const maxY=20, maxX=20;
+for (let j = 0; j < maxY; j++) {
+    for (let i = 0; i <maxX; i++) {
+        const tablePixel = document.createElement("div");
+        tablePixel.classList.add("table-pixel");
+        tablePixel.id = `pixel-${i}-${j}`;
+        // const pixelVal = document.createElement("input");
+        // pixelVal.value = 0; // 0 means free, 1 means occupied
+        // pixelVal.style.display = "none";
+        // tablePixel.append(pixelVal);
+        gameTable.append(tablePixel);
+    }
+}
+
+
+
+
+
 const board = document.querySelector(".board")
 let squares = Array.from(document.querySelectorAll(".board div"))
 
