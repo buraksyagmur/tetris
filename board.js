@@ -1,6 +1,22 @@
+"use strict";
 const board = document.querySelector(".board")
-let squares = Array.from(document.querySelectorAll(".board div"))
-
+for (let i = 1; i <= 10; i++) {
+    for (let j = 1; j < 20; j++) {
+        const square = document.createElement("div");
+        square.classList.add("board-div");
+        square.id = `pixel-${i}-${j}`;
+        board.append(square);
+    }
+}
+for (let k = 1; k <=10; k++) {
+    const square = document.createElement("div");
+    square.classList.add("board-div");
+    square.classList.add("taken");
+    square.id = `pixel-${k}-20`;
+    board.append(square);
+    
+}
+let squares = Array.from(document.querySelectorAll(".board-div"))
 let currentPosition = 3
 
 /// select random tetromino
