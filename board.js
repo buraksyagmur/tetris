@@ -63,6 +63,7 @@ let draw = () => {
 
         current.forEach(index => { 
             squares[currentPosition + index].classList.add("tetromino")
+            squares[currentPosition + index].classList.add(color[randomTetromino])
         })
     }  
 }
@@ -71,6 +72,7 @@ let draw = () => {
 let freeze = () => {
     current.forEach(index => {
         squares[currentPosition + index].classList.add("tetromino")
+        squares[currentPosition + index].classList.add(color[randomTetromino])
         squares[currentPosition + index].classList.add("taken")
         ScorePart1++
     })
@@ -132,6 +134,7 @@ let freeze = () => {
 let undraw = () => {
     current.forEach(index => {
         squares[currentPosition + index].classList.remove("tetromino")
+        squares[currentPosition + index].classList.remove(color[randomTetromino])
     })
 }
 function removeLine(squares) {

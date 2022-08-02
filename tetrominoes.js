@@ -55,3 +55,13 @@ const tetrominos = [
     tTetromino,
     zTetromino
 ]
+
+const color = [
+    "lTetromino",
+    "rlTetromino",
+    "iTetromino",
+    "oTetromino",
+    "sTetromino",
+    "tTetromino",
+    "zTetromino"
+]
