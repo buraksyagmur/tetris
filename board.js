@@ -80,7 +80,7 @@ let freeze = () => {
         let squares2 = Array.from(document.querySelectorAll(".board div"))
         // console.log(squares2)
         
-        if (squares2[i].className == "board-div tetromino taken") {
+        if (checkId(squares2[i].className)) {
             if (removeLine(squares2) != false) {
                 
                 let removeNumber = removeLine(squares2)
@@ -116,7 +116,7 @@ let freeze = () => {
                         let idArr = idName.split("_")
                         let oldNum = idArr[0].match(/\d+/)
                         let intNum = parseInt(oldNum)
-                        let newId = idArr[0].replace(/[0-9]+/g, intNum + 1);
+                        let newId = idArr[0].replace(/[3-9]+/g, intNum + 1);
                         squares3[k].id = newId + "_" + idArr[1]
                     }
                 }
@@ -141,11 +141,11 @@ function removeLine(squares) {
     let arr = []
     for (let i = 0; i < squares.length; i += 10) {
         let checkRmv = true
-        if (squares[i].id.slice(-1) == "1" && squares[i].className == "board-div tetromino taken") {
+        if (squares[i].id.slice(-1) == "1" && checkId(squares[i].className)){
             for (let k = i; k < i + 10; k++) {
                 console.log("valueOfK",squares[k])
                 console.log(arr.length, "ARR")
-                if (squares[k].className != "board-div tetromino taken") {
+                if (!checkId(squares[k].className)) {
                   checkRmv = false   
                 }
                 if (k == i+9 && checkRmv == true ){
@@ -169,6 +169,13 @@ function AddNewLines() {
         const square = document.createElement("div");
         square.classList.add("board-div");
         square.id = `pixel-1_${i}`;
-        board.prepend(square)
+        let lastBgn = document.getElementById("pixel-4_1")
+        board.insertBefore(square,firstSq)
     }
+}
+function checkId(ele){
+    if (ele.includes(color[0]) || ele.includes(color[1]) || ele.includes(color[2])|| ele.includes(color[3])|| ele.includes(color[4])|| ele.includes(color[5])|| ele.includes(color[6])){
+        return true
+    }
+    return false
 }

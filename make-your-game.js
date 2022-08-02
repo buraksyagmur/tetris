@@ -69,9 +69,10 @@ let handleRestart = () => {
     pMenu.style.opacity = "0"
     board.style.opacity = "1"
     // clear board - last row needs to have class taken
-    squares.slice(0,201).forEach(index => {
+    squares.slice(0,221).forEach(index => {
         index.classList.remove("taken")
         index.classList.remove("tetromino")
+        color.forEach(c=> index.classList.remove(c))
     })
     // reset values for new tetromino
     // used more than once -- create function?
