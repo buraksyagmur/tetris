@@ -1,6 +1,6 @@
 const board = document.querySelector(".board")
 let howManytimesDle = 0
-for (let i = 1; i <= 2 * lineWidth; i++) {
+for (let i = 1; i <= 22; i++) {
     for (let j = 1; j <= 10; j++) {
         const square = document.createElement("div");
         square.classList.add("board-div");
@@ -19,7 +19,16 @@ for (let k = 1; k <= 10; k++) {
     board.appendChild(square);
 }
 
+
+
 let squares = Array.from(document.querySelectorAll(".board div"))
+
+// move board up two rows
+squares.forEach(element => element.style.transform = "translateY(-40px)")
+// make first two rows invisible
+squares.slice(0,20).forEach(index => {
+    index.style.opacity = "0"
+})
 let lives = 3
 let currentPosition = 3
 let finish = false
@@ -51,6 +60,7 @@ let draw = () => {
         randomRotation = Math.floor(Math.random()*4)
         current = tetrominos[randomTetromino][randomRotation]
     } else {
+
         current.forEach(index => { 
             squares[currentPosition + index].classList.add("tetromino")
         })
