@@ -57,6 +57,9 @@ let handlePause = () => {
 }
 
 let handleRestart = () => {
+    ScorePart1 = 0
+    document.querySelector("#score").innerHTML = (ScorePart1)
+    lives = 3
     cancelAnimationFrame(request)
     cancelAnimationFrame(auto)
     request = null

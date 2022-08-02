@@ -40,7 +40,7 @@ let draw = () => {
             if (lives == 0) {
                 play = false
                 alert("game over")
-                return
+                handleRestart()
             }
         }
         /// if next position is taken
