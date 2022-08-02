@@ -46,7 +46,6 @@ const zTetromino = [
     [1, lineWidth, lineWidth+1, lineWidth*2]
 ]
 
-
 const tetrominos = [
     lTetromino,
     rlTetromino,
