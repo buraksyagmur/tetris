@@ -1,5 +1,5 @@
 const board = document.querySelector(".board")
-let howManytimesDle = 0
+let howManytimesDle = []
 for (let i = 1; i <= 22; i++) {
     for (let j = 1; j <= 10; j++) {
         const square = document.createElement("div");
@@ -26,7 +26,7 @@ let squares = Array.from(document.querySelectorAll(".board div"))
 // move board up two rows
 squares.forEach(element => element.style.transform = "translateY(-40px)")
 // make first two rows invisible
-squares.slice(0,20).forEach(index => {
+squares.slice(0, 20).forEach(index => {
     index.style.opacity = "0"
 })
 let lives = 3
@@ -56,16 +56,16 @@ let draw = () => {
         freeze()
         // create new tetromino
         currentPosition = 3
-        randomTetromino = Math.floor(Math.random()*tetrominos.length)
-        randomRotation = Math.floor(Math.random()*4)
+        randomTetromino = Math.floor(Math.random() * tetrominos.length)
+        randomRotation = Math.floor(Math.random() * 4)
         current = tetrominos[randomTetromino][randomRotation]
     } else {
 
-        current.forEach(index => { 
+        current.forEach(index => {
             squares[currentPosition + index].classList.add("tetromino")
             squares[currentPosition + index].classList.add(color[randomTetromino])
         })
-    }  
+    }
 }
 
 /// fix the position of the tetromino
@@ -79,10 +79,10 @@ let freeze = () => {
     for (let i = 0; i < squares.length; i++) {
         let squares2 = Array.from(document.querySelectorAll(".board div"))
         // console.log(squares2)
-        
+
         if (checkId(squares2[i].className)) {
             if (removeLine(squares2) != false) {
-                
+
                 let removeNumber = removeLine(squares2)
 
                 for (let p = 0; p < removeNumber.length; p++) {
@@ -99,28 +99,25 @@ let freeze = () => {
                         // square.id = `pixel-new-${-1*(newSqrNmbr-r)}`;
                         // board.prepend(square)
                     }
-                    howManytimesDle++
+                    howManytimesDle.push(removeNumber[removeNumber.length-1])
                     // console.log()
                 }
 
-            }else {
+            } else {
                 console.log("NO NEED TO REMOVE")
             }
         }
-        if (howManytimesDle != 0) {
-            for (let i = 0; i < (howManytimesDle); i++) {
+        if (howManytimesDle.length != 0) {
+            for (let i = 0; i < (howManytimesDle.length); i++) {
                 let squares3 = Array.from(document.querySelectorAll(".board div"))
-                for (let k = 0; k < squares3.length; k++) {
+                console.log("HOWMANY", howManytimesDle, "SQUARES3", squares3)
+                for (let k = 0; k < howManytimesDle[i]; k++) {
                     let idName = squares3[k].id
                     if (idName.includes("_")) {
-                        let idArr = idName.split("_")
-                        let oldNum = idArr[0].match(/\d+/)
-                        let intNum = parseInt(oldNum)
-                        let newId = idArr[0].replace(/[3-9]+/g, intNum + 1);
-                        squares3[k].id = newId + "_" + idArr[1]
+                        squares3[k].id = changeDivNames(idName)
                     }
                 }
-                ScorePart1+= 100
+                ScorePart1 += 100
                 AddNewLines()
             }
             howManytimesDle = 0
@@ -141,14 +138,14 @@ function removeLine(squares) {
     let arr = []
     for (let i = 0; i < squares.length; i += 10) {
         let checkRmv = true
-        if (squares[i].id.slice(-1) == "1" && checkId(squares[i].className)){
+        if (squares[i].id.slice(-1) == "1" && checkId(squares[i].className)) {
             for (let k = i; k < i + 10; k++) {
-                console.log("valueOfK",squares[k])
+                console.log("valueOfK", squares[k])
                 console.log(arr.length, "ARR")
                 if (!checkId(squares[k].className)) {
-                  checkRmv = false   
+                    checkRmv = false
                 }
-                if (k == i+9 && checkRmv == true ){
+                if (k == i + 9 && checkRmv == true) {
 
                     console.log("have to remove line")
                     arr.push(i)
@@ -156,7 +153,7 @@ function removeLine(squares) {
             }
         }
     }
-    
+
     if (arr == "") {
 
         return false
@@ -165,17 +162,30 @@ function removeLine(squares) {
     }
 }
 function AddNewLines() {
-    for (let i = 10; i > 0; i--) {
+    for (let i = 1; i < 11; i++) {
         const square = document.createElement("div");
         square.classList.add("board-div");
-        square.id = `pixel-1_${i}`;
-        let lastBgn = document.getElementById("pixel-4_1")
-        board.insertBefore(square,firstSq)
+        square.id = `pixel-3_${i}`;
+        square.style.transform = "translateY(-40px)"
+        let firstSq = document.getElementById("pixel-4_1")
+        console.log(firstSq, "thats the firstsq")
+        board.insertBefore(square, firstSq)
     }
 }
-function checkId(ele){
-    if (ele.includes(color[0]) || ele.includes(color[1]) || ele.includes(color[2])|| ele.includes(color[3])|| ele.includes(color[4])|| ele.includes(color[5])|| ele.includes(color[6])){
+function checkId(ele) {
+    if (ele.includes(color[0]) || ele.includes(color[1]) || ele.includes(color[2]) || ele.includes(color[3]) || ele.includes(color[4]) || ele.includes(color[5]) || ele.includes(color[6])) {
         return true
     }
     return false
+}
+function changeDivNames(idName) {
+    let idArr = idName.split("_")
+    let oldNum = idArr[0].match(/\d+/)
+    let intNum = parseInt(oldNum)
+    if (intNum != 1 && intNum != 2) {
+        let newId = idArr[0].replace(/[0-9]+/g, intNum + 1);
+        let res = newId + "_" + idArr[1]
+        return res
+    }
+    else { return idName }
 }
