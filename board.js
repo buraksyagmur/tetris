@@ -1,5 +1,5 @@
 const board = document.querySelector(".board")
-let howManytimesDle = []
+let howManytimesDle = 0
 for (let i = 1; i <= 22; i++) {
     for (let j = 1; j <= 10; j++) {
         const square = document.createElement("div");
@@ -83,7 +83,7 @@ let freeze = () => {
         if (checkId(squares2[i].className)) {
             if (removeLine(squares2) != false) {
 
-                let removeNumber = removeLine(squares2)
+                var removeNumber = removeLine(squares2)
 
                 for (let p = 0; p < removeNumber.length; p++) {
                     for (let r = 0; r < 10; r++) {
@@ -99,7 +99,7 @@ let freeze = () => {
                         // square.id = `pixel-new-${-1*(newSqrNmbr-r)}`;
                         // board.prepend(square)
                     }
-                    howManytimesDle.push(removeNumber[removeNumber.length-1])
+                    howManytimesDle++
                     // console.log()
                 }
 
@@ -107,11 +107,11 @@ let freeze = () => {
                 console.log("NO NEED TO REMOVE")
             }
         }
-        if (howManytimesDle.length != 0) {
-            for (let i = 0; i < (howManytimesDle.length); i++) {
+        if (howManytimesDle != 0) {
+            for (let i = 0; i < (howManytimesDle); i++) {
                 let squares3 = Array.from(document.querySelectorAll(".board div"))
                 console.log("HOWMANY", howManytimesDle, "SQUARES3", squares3)
-                for (let k = 0; k < howManytimesDle[i]; k++) {
+                for (let k = 0; k < removeNumber[i]; k++) {
                     let idName = squares3[k].id
                     if (idName.includes("_")) {
                         squares3[k].id = changeDivNames(idName)
