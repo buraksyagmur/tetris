@@ -27,7 +27,6 @@ let controls = () => {
         }
         if (e.key === " ") {
             undraw()
-            
             // update current
             currentRotation++
             
@@ -59,13 +58,13 @@ let controls = () => {
         if (e.key === "p") {
             handlePause()
         }
-        if (e.key === "ArrowDown") {  
-            draw()
+        if (e.key === "ArrowDown") { 
+            undraw()
             if (current.some(index => (squares[currentPosition + index + lineWidth].classList.contains("taken")))) {
                 /// if next position is taken
                 console.log("do not move down")
+                draw()
             } else {
-                undraw()
                 currentPosition += lineWidth
                 draw()
             }      

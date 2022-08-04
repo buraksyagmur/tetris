@@ -96,54 +96,54 @@ let freeze = () => {
         squares[currentPosition + index].classList.add("taken")
         ScorePart1++
     })
-    // for (let i = 0; i < squares.length; i++) {
-    //     let squares2 = Array.from(document.querySelectorAll(".board div"))
-    //     // console.log(squares2)
+    for (let i = 0; i < squares.length; i++) {
+        let squares2 = Array.from(document.querySelectorAll(".board div"))
+        // console.log(squares2)
 
-    //     if (checkId(squares2[i].className)) {
-    //         if (removeLine(squares2) != false) {
+        if (checkId(squares2[i].className)) {
+            if (removeLine(squares2) != false) {
 
-    //             var removeNumber = removeLine(squares2)
+                var removeNumber = removeLine(squares2)
 
-    //             for (let p = 0; p < removeNumber.length; p++) {
-    //                 for (let r = 0; r < 10; r++) {
-    //                     let delet = document.getElementById(`pixel-${(removeNumber[p] + 10) / 10}_${r + 1}`)
-    //                     console.log(`pixel-${(removeNumber[p] + 10) / 10}_${r + 1}`)
-    //                     console.log(p, r, delet, "thats the loooop3")
-    //                     console.log(squares.length, "------------------length")
-    //                     console.log(squares2.length, "------------------length2")
-    //                     board.removeChild(delet)
-    //                     // board.removeChild(board.children[removeNumber[0]+r])
-    //                     // const square = document.createElement("div");
-    //                     // square.classList.add("board-div");
-    //                     // square.id = `pixel-new-${-1*(newSqrNmbr-r)}`;
-    //                     // board.prepend(square)
-    //                 }
-    //                 howManytimesDle++
-    //                 // console.log()
-    //             }
+                for (let p = 0; p < removeNumber.length; p++) {
+                    for (let r = 0; r < 10; r++) {
+                        let delet = document.getElementById(`pixel-${(removeNumber[p] + 10) / 10}_${r + 1}`)
+                        console.log(`pixel-${(removeNumber[p] + 10) / 10}_${r + 1}`)
+                        console.log(p, r, delet, "thats the loooop3")
+                        console.log(squares.length, "------------------length")
+                        console.log(squares2.length, "------------------length2")
+                        board.removeChild(delet)
+                        // board.removeChild(board.children[removeNumber[0]+r])
+                        // const square = document.createElement("div");
+                        // square.classList.add("board-div");
+                        // square.id = `pixel-new-${-1*(newSqrNmbr-r)}`;
+                        // board.prepend(square)
+                    }
+                    howManytimesDle++
+                    // console.log()
+                }
 
-    //         } else {
-    //             console.log("NO NEED TO REMOVE")
-    //         }
-    //     }
-    //     if (howManytimesDle != 0) {
-    //         for (let i = 0; i < (howManytimesDle); i++) {
-    //             let squares3 = Array.from(document.querySelectorAll(".board div"))
-    //             console.log("HOWMANY", howManytimesDle, "SQUARES3", squares3)
-    //             for (let k = 0; k < removeNumber[i]; k++) {
-    //                 let idName = squares3[k].id
-    //                 if (idName.includes("_")) {
-    //                     squares3[k].id = changeDivNames(idName)
-    //                 }
-    //             }
-    //             ScorePart1 += 100
-    //             AddNewLines()
-    //         }
-    //         howManytimesDle = 0
-    //     }
+            } else {
+                console.log("NO NEED TO REMOVE")
+            }
+        }
+        if (howManytimesDle != 0) {
+            for (let i = 0; i < (howManytimesDle); i++) {
+                let squares3 = Array.from(document.querySelectorAll(".board div"))
+                console.log("HOWMANY", howManytimesDle, "SQUARES3", squares3)
+                for (let k = 0; k < removeNumber[i]; k++) {
+                    let idName = squares3[k].id
+                    if (idName.includes("_")) {
+                        squares3[k].id = changeDivNames(idName)
+                    }
+                }
+                ScorePart1 += 100
+                AddNewLines()
+            }
+            howManytimesDle = 0
+        }
 
-    // }
+    }
 }
 
 
@@ -160,8 +160,8 @@ function removeLine(squares) {
         let checkRmv = true
         if (squares[i].id.slice(-1) == "1" && checkId(squares[i].className)) {
             for (let k = i; k < i + 10; k++) {
-                console.log("valueOfK", squares[k])
-                console.log(arr.length, "ARR")
+                // console.log("valueOfK", squares[k])
+                // console.log(arr.length, "ARR")
                 if (!checkId(squares[k].className)) {
                     checkRmv = false
                 }
