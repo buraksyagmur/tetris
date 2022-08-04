@@ -34,8 +34,7 @@ let handleStart = () => {
         pauseInfo.style.transform = "translateY(-" + height + "px)"
         //continue
         request = requestAnimationFrame(repeat)
-    }
-    
+    }  
 }
 
 let handlePause = () => {
