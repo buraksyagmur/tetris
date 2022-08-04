@@ -14,7 +14,10 @@ body {
     top: 0;
     left: 0;
 }
-
+/* .boards{
+    display: inline-block;
+margin:auto;
+} */
 .board {
     width: 200px;
     height: 400px;
@@ -26,6 +29,24 @@ body {
 }
 
 .board div {
+    width: 20px;
+    height: 20px;
+}
+
+.next {
+    width: 80px;
+    height: 80px;
+    border-style: double;
+    border-color: black;
+    position:relative;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+
+    
+}
+
+.next div {
     width: 20px;
     height: 20px;
 }
@@ -83,3 +104,4 @@ body {
 .zTetromino {
     background-color: red;
 }
+

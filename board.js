@@ -18,11 +18,19 @@ for (let k = 1; k <= 10; k++) {
     square.id = `outside-pixel-${k}+11`;
     board.appendChild(square);
 }
-
-
-
+const nextBoard = document.querySelector(".next")
+for (let i= 1; i< 5; i++){
+    for (let k=1 ; k < 5 ; k++){
+        const nextSq = document.createElement("div")
+        nextSq.classList.add("nextBoard-div")
+        nextSq.id= `next-${i}_${k}`;
+        nextBoard.appendChild(nextSq);
+    }
+}
+let nextBlock = randomBlock()
+console.log(nextBlock, "NEXTBLOCK")
 let squares = Array.from(document.querySelectorAll(".board div"))
-
+let nextSquares= Array.from(document.querySelectorAll(".next div"))
 // move board up two rows
 squares.forEach(element => element.style.transform = "translateY(-40px)")
 // make first two rows invisible
@@ -34,16 +42,14 @@ let currentPosition = 3
 let finish = false
 let score = 0
 let ScorePart1 = 0
-let randomTetromino = Math.floor(Math.random() * tetrominos.length)
-let randomRotation = Math.floor(Math.random() * 4)
-let currentRotation = randomRotation
-let current = tetrominos[randomTetromino][currentRotation]
+let current = randomBlock()
 // draw tetromino onto the board
 let draw = () => {
+    nextBlockDeploy(nextBlock[1])
+    let firstTry = current[0]
     document.querySelector("#score").innerHTML = (ScorePart1)
-    if (current.some(index => squares[currentPosition + index + lineWidth].classList.contains("taken"))) {
+    if (firstTry.some(index => squares[currentPosition + index + lineWidth].classList.contains("taken"))) {
         if (currentPosition == 3) {
-            console.log(lives)
             lives -= 1
             document.querySelector("#lives").innerHTML = "" + lives
             if (lives == 0) {
@@ -51,28 +57,32 @@ let draw = () => {
                 alert("game over")
                 handleRestart()
             }
-        }
+        }else {
         /// if next position is taken
         freeze()
         // create new tetromino
         currentPosition = 3
-        randomTetromino = Math.floor(Math.random() * tetrominos.length)
-        randomRotation = Math.floor(Math.random() * 4)
-        current = tetrominos[randomTetromino][randomRotation]
+        current = nextBlock
+        removeNext()
+        nextBlock = randomBlock
+
+
+        }
     } else {
 
-        current.forEach(index => {
+        current[0].forEach(index => {
             squares[currentPosition + index].classList.add("tetromino")
-            squares[currentPosition + index].classList.add(color[randomTetromino])
+            squares[currentPosition + index].classList.add(color[current[1]])
         })
     }
 }
 
 /// fix the position of the tetromino
 let freeze = () => {
-    current.forEach(index => {
+    current[0].forEach(index => {
+        console.log(color[current[1]],"------------thats the current1",current[1])
         squares[currentPosition + index].classList.add("tetromino")
-        squares[currentPosition + index].classList.add(color[randomTetromino])
+        squares[currentPosition + index].classList.add(color[current[1]])
         squares[currentPosition + index].classList.add("taken")
         ScorePart1++
     })
@@ -129,9 +139,10 @@ let freeze = () => {
 
 // remove tetromino from board
 let undraw = () => {
-    current.forEach(index => {
+    console.log("---------------- thats the current0", current[0])
+    current[0].forEach(index => {
         squares[currentPosition + index].classList.remove("tetromino")
-        squares[currentPosition + index].classList.remove(color[randomTetromino])
+        squares[currentPosition + index].classList.remove(color[current[1]])
     })
 }
 function removeLine(squares) {
@@ -188,4 +199,40 @@ function changeDivNames(idName) {
         return res
     }
     else { return idName }
+}
+function randomBlock(){
+    let randomTetromino = Math.floor(Math.random() * tetrominos.length)
+    let randomRotation = Math.floor(Math.random() * 4)
+    let current = tetrominos[randomTetromino][randomRotation]
+    return [current, randomTetromino,randomRotation]
+}
+function nextBlockDeploy(name){
+    let numbers = []
+    let squares = Array.from(document.querySelectorAll(".next div"))
+    if (color[name] == "lTetromino"){
+        numbers.push(1,5,9,10)
+    }else if (color[name] == "rlTetromino"){
+        numbers.push(1,5,8,9)
+    }else if (color[name] == "iTetromino"){
+        numbers.push(1,5,9,13)
+    }else if (color[name] == "oTetromino"){
+        numbers.push(5,6,9,10)
+    }else if (color[name] == "sTetromino"){
+        numbers.push(5,6,8,9)
+    }else if (color[name] == "tTetromino"){
+        numbers.push(5,8,9,10)
+    }else if(color[name] == "zTetromino"){
+        numbers.push(5,6,10,11)
+    }
+    for (let i=0; i< numbers.length; i++){
+        squares[numbers[i]].classList.add("tetromino") 
+        squares[numbers[i]].classList.add(color[name])
+    }
+    numbers = []
+}
+function removeNext(){
+    for (let i=0 ; i< nextSquares.length;i++){
+        nextSquares[i].classList.remove("tetromino")
+        nextSquares[i].classList.remove(color[current[1]])
+    }
 }
