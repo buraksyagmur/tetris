@@ -57,6 +57,7 @@ let handlePause = () => {
 }
 
 let handleRestart = () => {
+    let resSquares = Array.from(document.querySelectorAll(".board div"))
     ScorePart1 = 0
     document.querySelector("#score").innerHTML = (ScorePart1)
     lives = 3
@@ -69,7 +70,7 @@ let handleRestart = () => {
     pMenu.style.opacity = "0"
     board.style.opacity = "1"
     // clear board - last row needs to have class taken
-    squares.slice(0,221).forEach(index => {
+    resSquares.slice(0,221).forEach(index => {
         index.classList.remove("taken")
         index.classList.remove("tetromino")
         color.forEach(c=> index.classList.remove(c))

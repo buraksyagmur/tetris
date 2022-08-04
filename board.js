@@ -43,7 +43,6 @@ let draw = () => {
     document.querySelector("#score").innerHTML = (ScorePart1)
     if (current.some(index => squares[currentPosition + index + lineWidth].classList.contains("taken"))) {
         if (currentPosition == 3) {
-            console.log(lives)
             lives -= 1
             document.querySelector("#lives").innerHTML = "" + lives
             if (lives == 0) {
@@ -51,7 +50,7 @@ let draw = () => {
                 alert("game over")
                 handleRestart()
             }
-        }
+        }else {
         /// if next position is taken
         freeze()
         // create new tetromino
@@ -59,6 +58,7 @@ let draw = () => {
         randomTetromino = Math.floor(Math.random() * tetrominos.length)
         randomRotation = Math.floor(Math.random() * 4)
         current = tetrominos[randomTetromino][randomRotation]
+        }
     } else {
 
         current.forEach(index => {
