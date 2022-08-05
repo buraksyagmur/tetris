@@ -56,6 +56,7 @@ const tetrominos = [
     zTetromino
 ]
 
+// css classes names
 const color = [
     "lTetromino",
     "rlTetromino",

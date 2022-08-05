@@ -7,7 +7,7 @@ let controls = () => {
             if (!isAtRightEdge) currentPosition += 1
             current.some(index => {
                 if (squares[currentPosition + index].classList.contains("taken")) {
-                /// if right position is taken
+                /// revert to prev pos if right position is taken
                 currentPosition--
                 }
             })
@@ -19,7 +19,7 @@ let controls = () => {
             if (!isAtLeftEdge) currentPosition -= 1
             current.some(index => {
                 if (squares[currentPosition + index].classList.contains("taken")) {
-                /// if right position is taken
+                /// revert to prev pos if left position is taken
                 currentPosition++
                 }
             })
@@ -42,6 +42,7 @@ let controls = () => {
                     current=prev;
                 }
             }
+            // lineWidth - 2 is for the case of rectangle tetris
             if (prev.some(index => (currentPosition + index) % lineWidth === lineWidth-1) || prev.some(index => (currentPosition + index) % lineWidth === lineWidth-2)) {
                 if (current.some(index => (currentPosition + index) % lineWidth === 0)) {
                     console.log("cant rotate right wall")
