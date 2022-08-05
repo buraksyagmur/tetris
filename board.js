@@ -60,6 +60,7 @@ let draw = () => {
                     squares[currentPosition + index].classList.add(color[randomTetromino])
                 })
             } else {
+                // delay before freezing tetromino - to allow left/right movement and rotation
                 frozen = setTimeout(() => {
                     frozen = null
                     freeze()
@@ -79,6 +80,7 @@ let draw = () => {
             }
         }
     } else {
+        // cancel freeze time out if piece can now move to next position
         clearTimeout(frozen)
         frozen = null
         current.forEach(index => {
@@ -90,6 +92,7 @@ let draw = () => {
 
 /// fix the position of the tetromino
 let freeze = () => {
+    // adding classes to frozen squares
     current.forEach(index => {
         squares[currentPosition + index].classList.add("tetromino")
         squares[currentPosition + index].classList.add(color[randomTetromino])
@@ -149,6 +152,7 @@ let freeze = () => {
 
 // remove tetromino from board
 let undraw = () => {
+    // removing classes to make squares disappear
     current.forEach(index => {
         squares[currentPosition + index].classList.remove("tetromino")
         squares[currentPosition + index].classList.remove(color[randomTetromino])
