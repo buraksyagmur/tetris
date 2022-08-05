@@ -19,6 +19,9 @@ let starttime = null
 let duration = 1000
 
 let handleStart = () => {
+    // remove click event
+    cBtn.removeEventListener("click", handleStart)
+    rBtn.removeEventListener("click", handleRestart)
     // do not execute repeat if request is not null 
     if (request === null) {
         // remove pause menu using opacity to avoid repaint
@@ -53,9 +56,17 @@ let handlePause = () => {
     
     // fade board
     board.style.opacity = "0.25"
+
+    // add click events
+    cBtn.addEventListener("click", handleStart)
+    rBtn.addEventListener("click", handleRestart)
+
 }
 
 let handleRestart = () => {
+    //remove click event
+    cBtn.removeEventListener("click", handleStart)
+    rBtn.removeEventListener("click", handleRestart)
     let resSquares = Array.from(document.querySelectorAll(".board div"))
     ScorePart1 = 0
     document.querySelector("#score").innerHTML = (ScorePart1)
@@ -95,5 +106,3 @@ document.addEventListener("keydown", (e) => {
     } 
 })
 
-cBtn.addEventListener("click", handleStart)
-rBtn.addEventListener("click", handleRestart)
