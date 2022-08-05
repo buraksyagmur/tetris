@@ -76,7 +76,7 @@ let draw = () => {
                     current = tetrominos[randomTetromino][randomRotation]
 
                     request = requestAnimationFrame(repeat)
-                }, 200)
+                }, 400)
             }
         }
     } else {
@@ -112,10 +112,10 @@ let freeze = () => {
                 for (let p = 0; p < removeNumber.length; p++) {
                     for (let r = 0; r < 10; r++) {
                         let delet = document.getElementById(`pixel-${(removeNumber[p] + 10) / 10}_${r + 1}`)
-                        console.log(`pixel-${(removeNumber[p] + 10) / 10}_${r + 1}`)
-                        console.log(p, r, delet, "thats the loooop3")
-                        console.log(squares.length, "------------------length")
-                        console.log(squares2.length, "------------------length2")
+                        // console.log(`pixel-${(removeNumber[p] + 10) / 10}_${r + 1}`)
+                        // console.log(p, r, delet, "thats the loooop3")
+                        // console.log(squares.length, "------------------length")
+                        // console.log(squares2.length, "------------------length2")
                         board.removeChild(delet)
                         // board.removeChild(board.children[removeNumber[0]+r])
                         // const square = document.createElement("div");
@@ -128,13 +128,13 @@ let freeze = () => {
                 }
 
             } else {
-                console.log("NO NEED TO REMOVE")
+                // console.log("NO NEED TO REMOVE")
             }
         }
         if (howManytimesDle != 0) {
             for (let i = 0; i < (howManytimesDle); i++) {
                 let squares3 = Array.from(document.querySelectorAll(".board div"))
-                console.log("HOWMANY", howManytimesDle, "SQUARES3", squares3)
+                // console.log("HOWMANY", howManytimesDle, "SQUARES3", squares3)
                 for (let k = 0; k < removeNumber[i]; k++) {
                     let idName = squares3[k].id
                     if (idName.includes("_")) {
@@ -174,7 +174,7 @@ function removeLine(squares) {
                 }
                 if (k == i + 9 && checkRmv == true) {
 
-                    console.log("have to remove line")
+                    // console.log("have to remove line")
                     arr.push(i)
                 }
             }
@@ -195,7 +195,7 @@ function AddNewLines() {
         square.id = `pixel-3_${i}`;
         square.style.transform = "translateY(-40px)"
         let firstSq = document.getElementById("pixel-4_1")
-        console.log(firstSq, "thats the firstsq")
+        // console.log(firstSq, "thats the firstsq")
         board.insertBefore(square, firstSq)
     }
 }

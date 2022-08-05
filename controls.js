@@ -1,6 +1,6 @@
 let controls = () => {
     document.onkeydown = (e) => {     
-        console.log(e.key)
+        // console.log(e.key)
         if (e.key === "ArrowRight") {   
             undraw()
             const isAtRightEdge = current.some(index => (currentPosition + index) % lineWidth === lineWidth - 1);
@@ -40,7 +40,7 @@ let controls = () => {
             if (prev.some(index => (currentPosition + index) % lineWidth === 0)) {
                 // do not rotate if new current has any square on the previous line
                 if (current.some(index => (currentPosition + index) % lineWidth === lineWidth-1)) {
-                    console.log("cant rotate left wall")
+                    // console.log("cant rotate left wall")
                     current=prev;
                 }
             }
@@ -48,13 +48,13 @@ let controls = () => {
             if (prev.some(index => (currentPosition + index) % lineWidth === lineWidth-1) || prev.some(index => (currentPosition + index) % lineWidth === lineWidth-2)) {
                 // do not rotate if new curent has any square on the next line
                 if (current.some(index => (currentPosition + index) % lineWidth === 0)) {
-                    console.log("cant rotate right wall")
+                    // console.log("cant rotate right wall")
                     current=prev;
                 }
             }
             // check if new position has any taken class
             if (current.some(index => squares[currentPosition + index].classList.contains("taken"))) {
-                console.log("cant rotate - taken")
+                // console.log("cant rotate - taken")
                 current=prev;
             }
             draw()       
@@ -67,7 +67,7 @@ let controls = () => {
             // check if next position has and taken sqaures
             if (current.some(index => (squares[currentPosition + index + lineWidth].classList.contains("taken")))) {
                 /// if next position is taken
-                console.log("do not move down")
+                // console.log("do not move down")
                 // do not move to next position
                 draw()
             } else {
