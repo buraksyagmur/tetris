@@ -68,9 +68,30 @@ let handleRestart = () => {
     cBtn.removeEventListener("click", handleStart)
     rBtn.removeEventListener("click", handleRestart)
     let resSquares = Array.from(document.querySelectorAll(".board div"))
-    ScorePart1 = 0
-    document.querySelector("#score").innerHTML = (ScorePart1)
-    lives = 3
+    lives--
+    if (lives === 0) {
+        ScorePart1 = 0
+        document.querySelector("#score").innerHTML = (ScorePart1)
+        lives = 3
+        document.querySelector("#lives").innerHTML = "" + lives
+        // clear board
+        resSquares.slice(0,220).forEach(index => {
+            index.classList.remove("taken")
+            index.classList.remove("tetromino")
+            color.forEach(c=> index.classList.remove(c))
+        })
+        // reset values for new tetromino
+        // used more than once -- create function?
+        currentPosition = 3
+        randomTetromino = Math.floor(Math.random()*tetrominos.length)
+        randomRotation = Math.floor(Math.random()*4)
+        current = tetrominos[randomTetromino][randomRotation]
+        handlePause()
+        return
+    }
+    document.querySelector("#lives").innerHTML = "" + lives
+    
+
     cancelAnimationFrame(request)
     cancelAnimationFrame(auto)
     request = null
