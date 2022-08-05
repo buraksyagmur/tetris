@@ -99,15 +99,16 @@ let freeze = () => {
         squares[currentPosition + index].classList.add("taken")
         ScorePart1++
     })
+    // check board for complete lines
     for (let i = 0; i < squares.length; i++) {
         let squares2 = Array.from(document.querySelectorAll(".board div"))
         // console.log(squares2)
-
+        
         if (checkId(squares2[i].className)) {
             if (removeLine(squares2) != false) {
 
+                
                 var removeNumber = removeLine(squares2)
-
                 for (let p = 0; p < removeNumber.length; p++) {
                     for (let r = 0; r < 10; r++) {
                         let delet = document.getElementById(`pixel-${(removeNumber[p] + 10) / 10}_${r + 1}`)
@@ -147,6 +148,8 @@ let freeze = () => {
         }
 
     }
+    // update squares after line remove/add
+    squares = Array.from(document.querySelectorAll(".board div"))
 }
 
 
