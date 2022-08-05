@@ -45,13 +45,13 @@ let draw = () => {
     document.querySelector("#score").innerHTML = (ScorePart1)
     if (current.some(index => squares[currentPosition + index + lineWidth].classList.contains("taken"))) {
         if (currentPosition == 3) {
-            lives -= 1
-            document.querySelector("#lives").innerHTML = "" + lives
-            if (lives == 0) {
-                play = false
-                alert("game over")
-                handleRestart()
-            }
+            current.forEach(index => {
+                squares[currentPosition + index].classList.add("tetromino")
+                squares[currentPosition + index].classList.add(color[randomTetromino])
+            })
+            alert("game over")
+            handleRestart()
+            return  
         }else {
             /// if next position is taken
             if (frozen !== null) {
@@ -76,7 +76,7 @@ let draw = () => {
                     current = tetrominos[randomTetromino][randomRotation]
 
                     request = requestAnimationFrame(repeat)
-                }, 1000)
+                }, 200)
             }
         }
     } else {
