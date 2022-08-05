@@ -10,6 +10,7 @@ let autoDown = (timestamp) => {
 
     if (runtime < duration) {
         auto = requestAnimationFrame(autoDown)
+        clock.textContent = `${gameTimer.getMin}:${gameTimer.getSec}`;
     } else {
         undraw()
         currentPosition += lineWidth

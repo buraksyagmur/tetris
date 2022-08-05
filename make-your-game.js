@@ -1,5 +1,6 @@
 const startBtn = document.querySelector("#start-button")
 const scoreDisplay = document.querySelector("#score")
+const clock = document.querySelector("#clock");
 const pMenu = document.getElementById("pauseMenu")
 const cBtn = document.getElementById("continue")
 const rBtn = document.getElementById("restart")
@@ -17,6 +18,9 @@ let request = null
 let auto = null
 let starttime = null
 let duration = 1000
+let gameTimer;
+console.log(clock);
+
 
 let handleStart = () => {
     // do not execute repeat if request is not null 
@@ -34,8 +38,14 @@ let handleStart = () => {
         pauseInfo.style.transform = "translateY(-" + height + "px)"
         //continue
         request = requestAnimationFrame(repeat)
+        
+        if (!gameTimer) {
+            gameTimer = new timer(Date.now());
+            gameTimer.startTimer();
+        } else {
+            gameTimer.continueTimer();
+        }
     }
-    
 }
 
 let handlePause = () => {
@@ -54,6 +64,8 @@ let handlePause = () => {
     
     // fade board
     board.style.opacity = "0.25"
+
+    gameTimer.pauseTimer();
 }
 
 let handleRestart = () => {
@@ -65,6 +77,7 @@ let handleRestart = () => {
     request = null
     auto = null
     starttime = null
+    gameTimer = new timer(Date.now());
     // remove pause menu and show board
     pMenu.style.opacity = "0"
     board.style.opacity = "1"
