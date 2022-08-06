@@ -65,3 +65,4 @@ const color = [
     "tTetromino",
     "zTetromino"
 ]
+

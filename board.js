@@ -1,5 +1,9 @@
 const board = document.querySelector(".board")
 let howManytimesDle = 0
+let finishSq = []
+for (let i=0; i< lineWidth*2; i++){
+    finishSq.push(i)
+}
 for (let i = 1; i <= 22; i++) {
     for (let j = 1; j <= 10; j++) {
         const square = document.createElement("div");
@@ -34,6 +38,7 @@ let nextSquares= Array.from(document.querySelectorAll(".next div"))
 squares.forEach(element => element.style.transform = "translateY(-40px)")
 // make first two rows invisible
 squares.slice(0, 20).forEach(index => {
+    index.classList.add("begin")
     index.style.opacity = "0"
 })
 let lives = 3
@@ -47,7 +52,7 @@ let draw = () => {
     nextBlockDeploy(nextBlock[1])
     document.querySelector("#score").innerHTML = (ScorePart1)
     if (current[0].some(index => squares[currentPosition + index + lineWidth].classList.contains("taken"))) {
-        if (currentPosition == 3) {
+        if (finishSq.includes(currentPosition) ) {
             lives -= 1
             document.querySelector("#lives").innerHTML = "" + lives
             if (lives == 0) {
