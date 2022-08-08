@@ -19,7 +19,6 @@ let auto = null
 let starttime = null
 let duration = 1000
 let gameTimer;
-console.log(clock);
 
 
 let handleStart = () => {
@@ -77,7 +76,8 @@ let handleRestart = () => {
     request = null
     auto = null
     starttime = null
-    gameTimer = new timer(Date.now());
+    // gameTimer.restartTimer();
+    // gameTimer = new timer(Date.now()); // coz handleStart will check !gameTimer
     // remove pause menu and show board
     pMenu.style.opacity = "0"
     board.style.opacity = "1"

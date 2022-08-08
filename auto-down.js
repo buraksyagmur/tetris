@@ -10,13 +10,13 @@ let autoDown = (timestamp) => {
 
     if (runtime < duration) {
         auto = requestAnimationFrame(autoDown)
-        clock.textContent = `${gameTimer.getMin}:${gameTimer.getSec}`;
     } else {
         undraw()
         currentPosition += lineWidth
         //reset values
         starttime = null
         auto = null
+        clock.textContent = `${gameTimer.getMin}:${gameTimer.getSec}`;
         draw()
         request = requestAnimationFrame(repeat)
     }
