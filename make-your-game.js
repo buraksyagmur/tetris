@@ -19,11 +19,12 @@ let auto = null
 let starttime = null
 let duration = 1000
 let gameTimer;
-
+let paused = false;
 
 let handleStart = () => {
     // do not execute repeat if request is not null 
     if (request === null) {
+        paused = false
         // remove pause menu using opacity to avoid repaint
         pMenu.style.opacity = "0"
         board.style.opacity = "1"
@@ -48,6 +49,7 @@ let handleStart = () => {
 }
 
 let handlePause = () => {
+    paused = true;
     // create function?
     cancelAnimationFrame(request)
     cancelAnimationFrame(auto)
@@ -63,37 +65,39 @@ let handlePause = () => {
     
     // fade board
     board.style.opacity = "0.25"
-
-    gameTimer.pauseTimer();
+    if (gameTimer) gameTimer.pauseTimer();
 }
 
 let handleRestart = () => {
-    ScorePart1 = 0
-    document.querySelector("#score").innerHTML = (ScorePart1)
-    lives = 3
-    cancelAnimationFrame(request)
-    cancelAnimationFrame(auto)
-    request = null
-    auto = null
-    starttime = null
-    // gameTimer.restartTimer();
-    // gameTimer = new timer(Date.now()); // coz handleStart will check !gameTimer
-    // remove pause menu and show board
-    pMenu.style.opacity = "0"
-    board.style.opacity = "1"
-    // clear board - last row needs to have class taken
-    squares.slice(0,221).forEach(index => {
-        index.classList.remove("taken")
-        index.classList.remove("tetromino")
-        color.forEach(c=> index.classList.remove(c))
-    })
-    // reset values for new tetromino
-    // used more than once -- create function?
-    currentPosition = 3
-    randomTetromino = Math.floor(Math.random()*tetrominos.length)
-    randomRotation = Math.floor(Math.random()*4)
-    current = tetrominos[randomTetromino][randomRotation]
-    request = requestAnimationFrame(repeat)
+    if (paused) {
+        ScorePart1 = 0
+        document.querySelector("#score").innerHTML = (ScorePart1)
+        lives = 3
+        cancelAnimationFrame(request)
+        cancelAnimationFrame(auto)
+        request = null
+        auto = null
+        starttime = null
+        gameTimer = null
+        gameTimer = new timer(Date.now()) // coz handleStart will check !gameTimer
+        // remove pause menu and show board
+        pMenu.style.opacity = "0"
+        board.style.opacity = "1"
+        // clear board - last row needs to have class taken
+        squares.slice(0,221).forEach(index => {
+            index.classList.remove("taken")
+            index.classList.remove("tetromino")
+            color.forEach(c=> index.classList.remove(c))
+        })
+        // reset values for new tetromino
+        // used more than once -- create function?
+        currentPosition = 3
+        randomTetromino = Math.floor(Math.random()*tetrominos.length)
+        randomRotation = Math.floor(Math.random()*4)
+        current = tetrominos[randomTetromino][randomRotation]
+        request = requestAnimationFrame(repeat)
+        paused = false
+    }
 }
 
 document.addEventListener("keydown", (e) => {

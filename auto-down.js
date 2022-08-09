@@ -16,7 +16,7 @@ let autoDown = (timestamp) => {
         //reset values
         starttime = null
         auto = null
-        clock.textContent = `${gameTimer.getMin}:${gameTimer.getSec}`;
+        clock.textContent = `${gameTimer.getTime()}`;
         draw()
         request = requestAnimationFrame(repeat)
     }
