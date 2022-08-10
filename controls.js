@@ -1,7 +1,8 @@
 currentRotation= current[2]
 let controls = () => {
     
-    document.onkeydown = (e) => {     
+    document.onkeydown = (e) => { 
+            
         // console.log(e.key)
         if (e.key === "ArrowRight") {   
             undraw()
@@ -65,15 +66,16 @@ let controls = () => {
             handlePause()
         }
         if (e.key === "ArrowDown") { 
-            undraw()
+            
             // check if next position has and taken sqaures
             if (current[0].some(index => (squares[currentPosition + index + lineWidth].classList.contains("taken")))) {
                 /// if next position is taken
                 // console.log("do not move down")
                 // do not move to next position
-                draw()
+                // draw()
             } else {
                 // move to next position
+                undraw()
                 currentPosition += lineWidth
                 draw()
             }      
