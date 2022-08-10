@@ -47,6 +47,7 @@ let finish = false
 let score = 0
 let ScorePart1 = 0
 let current = randomBlock()
+let frozen = null
 // draw tetromino onto the board
 let draw = () => {
     nextBlockDeploy(nextBlock[1])
@@ -62,17 +63,39 @@ let draw = () => {
             }
         }else {
         /// if next position is taken
-        freeze()
-        // create new tetromino
-        currentPosition = 3
-        current = nextBlock
-        removeNext()
-        nextBlock = randomBlock()
+        if (frozen !== null) {
+            current[0].forEach(index => {
+                squares[currentPosition + index].classList.add("tetromino")
+                squares[currentPosition + index].classList.add(color[current[1]])
+            })
+        } else {
+            // delay before freezing tetromino - to allow left/right movement and rotation
+            frozen = setTimeout(() => {
+                frozen = null
+                freeze()
+                cancelAnimationFrame(request)
+                cancelAnimationFrame(auto)
+                request = null
+                auto = null
+                starttime = null
+                // create new tetromino
+      // create new tetromino
+      currentPosition = 3
+      current = nextBlock
+      removeNext()
+      nextBlock = randomBlock()
+
+                request = requestAnimationFrame(repeat)
+            }, 400)
+        }
+  
 
 
         }
     } else {
-
+        // cancel freeze time out if piece can now move to next position
+        clearTimeout(frozen)
+        frozen = null
         current[0].forEach(index => {
             squares[currentPosition + index].classList.add("tetromino")
             squares[currentPosition + index].classList.add(color[current[1]])
@@ -82,23 +105,30 @@ let draw = () => {
 
 /// fix the position of the tetromino
 let freeze = () => {
+    // adding classes to frozen squares
     current[0].forEach(index => {
         squares[currentPosition + index].classList.add("tetromino")
         squares[currentPosition + index].classList.add(color[current[1]])
         squares[currentPosition + index].classList.add("taken")
         ScorePart1++
     })
+    // check board for complete lines
     for (let i = 0; i < squares.length; i++) {
         let squares2 = Array.from(document.querySelectorAll(".board div"))
-
+        // console.log(squares2)
+        
         if (checkId(squares2[i].className)) {
             if (removeLine(squares2) != false) {
 
+                
                 var removeNumber = removeLine(squares2)
-
                 for (let p = 0; p < removeNumber.length; p++) {
                     for (let r = 0; r < 10; r++) {
                         let delet = document.getElementById(`pixel-${(removeNumber[p] + 10) / 10}_${r + 1}`)
+                        // console.log(`pixel-${(removeNumber[p] + 10) / 10}_${r + 1}`)
+                        // console.log(p, r, delet, "thats the loooop3")
+                        // console.log(squares.length, "------------------length")
+                        // console.log(squares2.length, "------------------length2")
                         board.removeChild(delet)
                         // board.removeChild(board.children[removeNumber[0]+r])
                         // const square = document.createElement("div");
@@ -107,13 +137,17 @@ let freeze = () => {
                         // board.prepend(square)
                     }
                     howManytimesDle++
+                    // console.log()
                 }
 
-            } 
+            } else {
+                // console.log("NO NEED TO REMOVE")
+            }
         }
         if (howManytimesDle != 0) {
             for (let i = 0; i < (howManytimesDle); i++) {
                 let squares3 = Array.from(document.querySelectorAll(".board div"))
+                // console.log("HOWMANY", howManytimesDle, "SQUARES3", squares3)
                 for (let k = 0; k < removeNumber[i]; k++) {
                     let idName = squares3[k].id
                     if (idName.includes("_")) {
@@ -127,11 +161,14 @@ let freeze = () => {
         }
 
     }
+    // update squares after line remove/add
+    squares = Array.from(document.querySelectorAll(".board div"))
 }
 
 
 // remove tetromino from board
 let undraw = () => {
+        // removing classes to make squares disappear
     current[0].forEach(index => {
         squares[currentPosition + index].classList.remove("tetromino")
         squares[currentPosition + index].classList.remove(color[current[1]])
@@ -147,6 +184,8 @@ function removeLine(squares) {
                     checkRmv = false
                 }
                 if (k == i + 9 && checkRmv == true) {
+
+                    // console.log("have to remove line")
                     arr.push(i)
                 }
             }
