@@ -17,11 +17,16 @@ let request = null
 let auto = null
 let starttime = null
 let duration = 1000
-
+let gameTimer;
+let paused = false;
 let handleStart = () => {
+    // remove click event
+    cBtn.removeEventListener("click", handleStart)
+    rBtn.removeEventListener("click", handleRestart)
     // do not execute repeat if request is not null 
     if (request === null) {
         // remove pause menu using opacity to avoid repaint
+        paused = false
         pMenu.style.opacity = "0"
         board.style.opacity = "1"
         info.style.opacity = "0"
@@ -34,11 +39,17 @@ let handleStart = () => {
         pauseInfo.style.transform = "translateY(-" + height + "px)"
         //continue
         request = requestAnimationFrame(repeat)
-    }
-    
+        if (!gameTimer) {
+            gameTimer = new timer(Date.now());
+            gameTimer.startTimer();
+        } else {
+            gameTimer.continueTimer();
+        }
+    }  
 }
 
 let handlePause = () => {
+    paused = true
     // create function?
     cancelAnimationFrame(request)
     cancelAnimationFrame(auto)
@@ -54,23 +65,55 @@ let handlePause = () => {
     
     // fade board
     board.style.opacity = "0.25"
-}
+    if (gameTimer) gameTimer.pauseTimer()
+    // add click events
+    cBtn.addEventListener("click", handleStart)
+    rBtn.addEventListener("click", handleRestart)
 
+}
 let handleRestart = () => {
+    //remove click event
+    cBtn.removeEventListener("click", handleStart)
+    rBtn.removeEventListener("click", handleRestart)
     let resSquares = Array.from(document.querySelectorAll(".board div"))
-    ScorePart1 = 0
-    document.querySelector("#score").innerHTML = (ScorePart1)
-    lives = 3
+    lives--
+    if (lives === 0) {
+        ScorePart1 = 0
+        document.querySelector("#score").innerHTML = (ScorePart1)
+        lives = 3
+        document.querySelector("#lives").innerHTML = "" + lives
+        // clear board
+        resSquares.slice(0,220).forEach(index => {
+            index.classList.remove("taken")
+            index.classList.remove("tetromino")
+            color.forEach(c=> index.classList.remove(c))
+        })
+        // reset values for new tetromino
+        // used more than once -- create function?
+        request = null
+        auto = null
+        starttime = null
+        gameTimer = null
+        gameTimer = new timer(Date.now()) // coz handleStart will check !gameTimer
+        paused = false
+        currentPosition = 3
+        current= randomBlock()
+        handlePause()
+        return
+    }
+    document.querySelector("#lives").innerHTML = "" + lives
     cancelAnimationFrame(request)
     cancelAnimationFrame(auto)
     request = null
     auto = null
     starttime = null
+    gameTimer = null
+    gameTimer = new timer(Date.now()) // coz handleStart will check !gameTimer
     // remove pause menu and show board
     pMenu.style.opacity = "0"
     board.style.opacity = "1"
     // clear board - last row needs to have class taken
-    resSquares.slice(0,221).forEach(index => {
+    resSquares.slice(0,220).forEach(index => {
         index.classList.remove("taken")
         index.classList.remove("tetromino")
         color.forEach(c=> index.classList.remove(c))
@@ -78,10 +121,9 @@ let handleRestart = () => {
     // reset values for new tetromino
     // used more than once -- create function?
     currentPosition = 3
-    randomTetromino = Math.floor(Math.random()*tetrominos.length)
-    randomRotation = Math.floor(Math.random()*4)
-    current = tetrominos[randomTetromino][randomRotation]
+    current = randomBlock()
     request = requestAnimationFrame(repeat)
+    paused = false
 }
 
 document.addEventListener("keydown", (e) => {
@@ -96,5 +138,3 @@ document.addEventListener("keydown", (e) => {
     } 
 })
 
-cBtn.addEventListener("click", handleStart)
-rBtn.addEventListener("click", handleRestart)

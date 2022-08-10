@@ -12,12 +12,20 @@ let autoDown = (timestamp) => {
         auto = requestAnimationFrame(autoDown)
     } else {
         undraw()
-        currentPosition += lineWidth
-        //reset values
-        starttime = null
-        auto = null
-        draw()
-        request = requestAnimationFrame(repeat)
+        if (current[0].some(index => (squares[currentPosition + index + lineWidth].classList.contains("taken")))) {
+            /// if next position is taken
+            // console.log("do not move down")
+            draw()
+        } else {
+            
+            currentPosition += lineWidth
+            draw()
+            //reset values
+            starttime = null
+            auto = null 
+            clock.textContent = `${gameTimer.getTime()}`;
+            request = requestAnimationFrame(repeat)
+        }     
     }
 }
 
