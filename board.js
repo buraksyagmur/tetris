@@ -94,6 +94,7 @@ let draw = () => {
         frozen = null
         current[0].forEach(index => {
             squares[currentPosition + index].classList.add("tetromino")
+            // squares[currentPosition + index].style.opacity = "1"
             squares[currentPosition + index].classList.add(color[current[1]])
         })
     }
@@ -109,57 +110,57 @@ let freeze = () => {
         // ScorePart1++
     })
     // check board for complete lines
-    for (let i = 0; i < squares.length; i++) {
-        let squares2 = Array.from(document.querySelectorAll(".board div"))
-        // console.log(squares2)
+    // for (let i = 0; i < squares.length; i++) {
+    //     let squares2 = Array.from(document.querySelectorAll(".board div"))
+    //     // console.log(squares2)
         
-        if (checkId(squares2[i].className)) {
-            if (removeLine(squares2) != false) {
+    //     if (checkId(squares2[i].className)) {
+    //         if (removeLine(squares2) != false) {
 
                 
-                var removeNumber = removeLine(squares2)
-                for (let p = 0; p < removeNumber.length; p++) {
-                    for (let r = 0; r < 10; r++) {
-                        let delet = document.getElementById(`pixel-${(removeNumber[p] + 10) / 10}_${r + 1}`)
-                        // console.log(`pixel-${(removeNumber[p] + 10) / 10}_${r + 1}`)
-                        // console.log(p, r, delet, "thats the loooop3")
-                        // console.log(squares.length, "------------------length")
-                        // console.log(squares2.length, "------------------length2")
-                        board.removeChild(delet)
-                        // board.removeChild(board.children[removeNumber[0]+r])
-                        // const square = document.createElement("div");
-                        // square.classList.add("board-div");
-                        // square.id = `pixel-new-${-1*(newSqrNmbr-r)}`;
-                        // board.prepend(square)
-                    }
-                    howManytimesDle++
-                    // console.log()
-                }
+    //             var removeNumber = removeLine(squares2)
+    //             for (let p = 0; p < removeNumber.length; p++) {
+    //                 for (let r = 0; r < 10; r++) {
+    //                     let delet = document.getElementById(`pixel-${(removeNumber[p] + 10) / 10}_${r + 1}`)
+    //                     // console.log(`pixel-${(removeNumber[p] + 10) / 10}_${r + 1}`)
+    //                     // console.log(p, r, delet, "thats the loooop3")
+    //                     // console.log(squares.length, "------------------length")
+    //                     // console.log(squares2.length, "------------------length2")
+    //                     board.removeChild(delet)
+    //                     // board.removeChild(board.children[removeNumber[0]+r])
+    //                     // const square = document.createElement("div");
+    //                     // square.classList.add("board-div");
+    //                     // square.id = `pixel-new-${-1*(newSqrNmbr-r)}`;
+    //                     // board.prepend(square)
+    //                 }
+    //                 howManytimesDle++
+    //                 // console.log()
+    //             }
 
-            } else {
-                // console.log("NO NEED TO REMOVE")
-            }
-        }
-        if (howManytimesDle != 0) {
-            for (let i = 0; i < (howManytimesDle); i++) {
-                let squares3 = Array.from(document.querySelectorAll(".board div"))
-                // console.log("HOWMANY", howManytimesDle, "SQUARES3", squares3)
-                for (let k = 0; k < removeNumber[i]; k++) {
-                    let idName = squares3[k].id
-                    if (idName.includes("_")) {
-                        squares3[k].id = changeDivNames(idName)
-                    }
-                }
-                ScorePart1 += 100
-                AddNewLines()
-            }
-            if (howManytimesDle== 4){
-                ScorePart1+=400
-            }
-            howManytimesDle = 0
-        }
+    //         } else {
+    //             // console.log("NO NEED TO REMOVE")
+    //         }
+    //     }
+    //     if (howManytimesDle != 0) {
+    //         for (let i = 0; i < (howManytimesDle); i++) {
+    //             let squares3 = Array.from(document.querySelectorAll(".board div"))
+    //             // console.log("HOWMANY", howManytimesDle, "SQUARES3", squares3)
+    //             for (let k = 0; k < removeNumber[i]; k++) {
+    //                 let idName = squares3[k].id
+    //                 if (idName.includes("_")) {
+    //                     squares3[k].id = changeDivNames(idName)
+    //                 }
+    //             }
+    //             ScorePart1 += 100
+    //             AddNewLines()
+    //         }
+    //         if (howManytimesDle== 4){
+    //             ScorePart1+=400
+    //         }
+    //         howManytimesDle = 0
+    //     }
 
-    }
+    // }
     // update squares after line remove/add
     squares = Array.from(document.querySelectorAll(".board div"))
 }
@@ -170,6 +171,7 @@ let undraw = () => {
         // removing classes to make squares disappear
     current[0].forEach(index => {
         squares[currentPosition + index].classList.remove("tetromino")
+        // squares[currentPosition + index].style.opacity = "0"
         squares[currentPosition + index].classList.remove(color[current[1]])
     })
 }

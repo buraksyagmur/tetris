@@ -1,6 +1,5 @@
 let autoDown = (timestamp) => {
-    // enable keydown events
-    controls()
+    
 
     if (!starttime) {
         starttime = timestamp;
@@ -9,7 +8,7 @@ let autoDown = (timestamp) => {
     let runtime = timestamp - starttime;
 
     if (runtime < duration) {
-        auto = requestAnimationFrame(autoDown)
+        request = requestAnimationFrame(autoDown)
     } else {
         undraw()
         if (current[0].some(index => (squares[currentPosition + index + lineWidth].classList.contains("taken")))) {
@@ -31,5 +30,7 @@ let autoDown = (timestamp) => {
 
 const repeat = () => {
     draw()
-    auto = requestAnimationFrame(autoDown)
+    // enable keydown events
+    controls()
+    request = requestAnimationFrame(autoDown)
 }
