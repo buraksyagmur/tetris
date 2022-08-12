@@ -29,7 +29,7 @@ let autoDown = (timestamp) => {
     }
 }
 
-let repeat = () => {
+const repeat = () => {
     draw()
     auto = requestAnimationFrame(autoDown)
 }

@@ -19,7 +19,8 @@ let starttime = null
 let duration = 1000
 let gameTimer;
 let paused = false;
-let handleStart = () => {
+
+const handleStart = () => {
     // remove click event
     cBtn.removeEventListener("click", handleStart)
     rBtn.removeEventListener("click", handleRestart)
@@ -48,7 +49,7 @@ let handleStart = () => {
     }  
 }
 
-let handlePause = () => {
+const handlePause = () => {
     paused = true
     // create function?
     cancelAnimationFrame(request)
@@ -71,7 +72,7 @@ let handlePause = () => {
     rBtn.addEventListener("click", handleRestart)
 
 }
-let handleRestart = () => {
+const handleRestart = () => {
     //remove click event
     cBtn.removeEventListener("click", handleStart)
     rBtn.removeEventListener("click", handleRestart)

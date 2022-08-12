@@ -84,13 +84,9 @@ let draw = () => {
       current = nextBlock
       removeNext()
       nextBlock = randomBlock()
-
                 request = requestAnimationFrame(repeat)
             }, 400)
         }
-  
-
-
         }
     } else {
         // cancel freeze time out if piece can now move to next position
@@ -110,7 +106,7 @@ let freeze = () => {
         squares[currentPosition + index].classList.add("tetromino")
         squares[currentPosition + index].classList.add(color[current[1]])
         squares[currentPosition + index].classList.add("taken")
-        ScorePart1++
+        // ScorePart1++
     })
     // check board for complete lines
     for (let i = 0; i < squares.length; i++) {
