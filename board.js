@@ -22,6 +22,9 @@ for (let k = 1; k <= 10; k++) {
     square.id = `outside-pixel-${k}+11`;
     board.appendChild(square);
 }
+let squares = Array.from(document.querySelectorAll(".board div"))
+squares.forEach(element => element.style.willChange = 'transform')
+
 const nextBoard = document.querySelector(".next")
 for (let i= 1; i< 5; i++){
     for (let k=1 ; k < 5 ; k++){
@@ -32,10 +35,12 @@ for (let i= 1; i< 5; i++){
     }
 }
 let nextBlock = randomBlock()
-let squares = Array.from(document.querySelectorAll(".board div"))
 let nextSquares= Array.from(document.querySelectorAll(".next div"))
 // move board up two rows
-squares.forEach(element => element.style.transform = "translateY(-40px)")
+squares.forEach(element => {
+    element.style.transform = "translateY(-40px)"
+    element.style.willChange = 'auto';
+})
 // make first two rows invisible
 squares.slice(0, 20).forEach(index => {
     index.classList.add("begin")
@@ -141,6 +146,7 @@ let freeze = () => {
             }
         }
         if (howManytimesDle != 0) {
+
             for (let i = 0; i < (howManytimesDle); i++) {
                 let squares3 = Array.from(document.querySelectorAll(".board div"))
                 // console.log("HOWMANY", howManytimesDle, "SQUARES3", squares3)
@@ -202,11 +208,13 @@ function removeLine(squares) {
 function AddNewLines() {
     for (let i = 1; i < 11; i++) {
         const square = document.createElement("div");
+        square.style.willChange = 'transform';
         square.classList.add("board-div");
         square.id = `pixel-3_${i}`;
-        square.style.transform = "translateY(-40px)"
         let firstSq = document.getElementById("pixel-4_1")
+        square.style.transform = "translateY(-40px)"
         board.insertBefore(square, firstSq)
+        square.style.willChange = 'auto';
     }
 }
 function checkId(ele) {
