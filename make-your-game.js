@@ -1,187 +1,74 @@
-// make-your-game.js
+import throttle from '/node_modules/lodash-es/throttle.js';
 
-const startBtn = document.querySelector("#start-button")
-const scoreDisplay = document.querySelector("#score")
-const pMenu = document.getElementById("pauseMenu")
-const cBtn = document.getElementById("continue")
-const rBtn = document.getElementById("restart")
-// const board = document.querySelector(".board")
-const info = document.querySelector(".info")
-const pauseInfo = document.querySelector(".pauseInfo")
-let rect = board.getBoundingClientRect()
-// position pause menu above board
-let boardStyle = getComputedStyle(board)
-let boardMarginLeft = parseFloat(boardStyle['marginLeft'])
-let rect1 = pMenu.getBoundingClientRect()
-let boardTop = rect.y-rect1.y
-pMenu.style.transform = "translate("+boardMarginLeft+"px, " + boardTop +"px)"
-let request = null
-let auto = null
-let starttime = null
-let duration = 1000
-let gameTimer;
-let paused = false;
+const lineWidth = 10;
+// tetrominoes.js
 
-const handleStart = () => {
-    // remove click event
-    cBtn.removeEventListener("click", handleStart)
-    rBtn.removeEventListener("click", handleRestart)
-    // do not execute repeat if request is not null 
-    if (request === null) {
-        // remove pause menu using opacity to avoid repaint
-        paused = false
-        pMenu.style.opacity = "0"
-        board.style.opacity = "1"
-        info.style.opacity = "0"
-        pauseInfo.style.opacity = "1"
-        // move div up by previous div
-        let height = info.clientHeight
-        let infoStyle = getComputedStyle(info)
-        let margin = parseFloat(infoStyle['marginBottom'])
-        height += margin
-        pauseInfo.style.transform = "translateY(-" + height + "px)"
-        //continue
-        request = requestAnimationFrame(repeat)
-        if (!gameTimer) {
-            gameTimer = new timer(Date.now());
-            gameTimer.startTimer();
-        } else {
-            gameTimer.continueTimer();
-        }
-    }  
-}
+// array of tetromino positions
+const lTetromino = [
+    [1, lineWidth+1, lineWidth*2+1, lineWidth*2+2],
+    [lineWidth, lineWidth+1, lineWidth+2, lineWidth*2],
+    [0, 1, lineWidth+1, lineWidth*2+1],
+    [2, lineWidth, lineWidth+1, lineWidth+2]
+]
 
-const handlePause = () => {
-    paused = true
-    // create function?
-    cancelAnimationFrame(request)
-    cancelAnimationFrame(auto)
-    request = null
-    auto = null
-    starttime = null
-    // do not allow left right movement when paused
-    document.onkeydown = null
-    // show pause menu using opacity to avoid repaint and add class
-    pMenu.style.opacity = "1"
-    info.style.opacity = "1"
-    pauseInfo.style.opacity = "0"
-    
-    // fade board
-    board.style.opacity = "0.25"
-    if (gameTimer) gameTimer.pauseTimer()
-    // add click events
-    cBtn.addEventListener("click", handleStart)
-    rBtn.addEventListener("click", handleRestart)
+const rlTetromino = [
+    [1, lineWidth+1, lineWidth*2+1, lineWidth*2],
+    [0, lineWidth, lineWidth+1, lineWidth+2],
+    [1, 2, lineWidth+1, lineWidth*2+1],
+    [lineWidth, lineWidth+1, lineWidth+2, lineWidth*2+2]
+]
+const iTetromino = [
+    [1, lineWidth+1, lineWidth*2+1, lineWidth*3+1],
+    [lineWidth, lineWidth+1, lineWidth+2, lineWidth+3],
+    [1, lineWidth+1, lineWidth*2+1, lineWidth*3+1],
+    [lineWidth, lineWidth+1, lineWidth+2, lineWidth+3]
+]
+const oTetromino = [
+    [0, 1, lineWidth, lineWidth+1],
+    [0, 1, lineWidth, lineWidth+1],
+    [0, 1, lineWidth, lineWidth+1],
+    [0, 1, lineWidth, lineWidth+1]
+]
+const sTetromino = [
+    [lineWidth+1, lineWidth+2, lineWidth*2, lineWidth*2+1],
+    [0, lineWidth, lineWidth+1, lineWidth*2+1],
+    [lineWidth+1, lineWidth+2, lineWidth*2, lineWidth*2+1],
+    [0, lineWidth, lineWidth+1, lineWidth*2+1]
+]
+const tTetromino = [
+    [1, lineWidth, lineWidth+1, lineWidth+2],
+    [1, lineWidth+1, lineWidth+2, lineWidth*2+1],
+    [lineWidth, lineWidth+1, lineWidth+2, lineWidth*2+1],
+    [1, lineWidth, lineWidth+1, lineWidth*2+1]
+]
+const zTetromino = [
+    [lineWidth, lineWidth+1, lineWidth*2+1, lineWidth*2+2],
+    [1, lineWidth, lineWidth+1, lineWidth*2],
+    [lineWidth, lineWidth+1, lineWidth*2+1, lineWidth*2+2],
+    [1, lineWidth, lineWidth+1, lineWidth*2]
+]
 
-}
-const handleRestart = () => {
-    //remove click event
-    cBtn.removeEventListener("click", handleStart)
-    rBtn.removeEventListener("click", handleRestart)
-    let resSquares = Array.from(document.querySelectorAll(".board div"))
-    lives--
-    if (lives === 0) {
-        ScorePart1 = 0
-        document.querySelector("#score").innerHTML = (ScorePart1)
-        lives = 3
-        document.querySelector("#lives").innerHTML = "" + lives
-        // clear board
-        resSquares.slice(0,220).forEach(index => {
-            index.classList.remove("taken")
-            index.classList.remove("tetromino")
-            color.forEach(c=> index.classList.remove(c))
-        })
-        // reset values for new tetromino
-        // used more than once -- create function?
-        request = null
-        auto = null
-        starttime = null
-        gameTimer = null
-        gameTimer = new timer(Date.now()) // coz handleStart will check !gameTimer
-        paused = false
-        currentPosition = 3
-        current= randomBlock()
-        handlePause()
-        return
-    }
-    document.querySelector("#lives").innerHTML = "" + lives
-    cancelAnimationFrame(request)
-    cancelAnimationFrame(auto)
-    request = null
-    auto = null
-    starttime = null
-    gameTimer = null
-    gameTimer = new timer(Date.now()) // coz handleStart will check !gameTimer
-    // remove pause menu and show board
-    pMenu.style.opacity = "0"
-    board.style.opacity = "1"
-    // clear board - last row needs to have class taken
-    resSquares.slice(0,220).forEach(index => {
-        index.classList.remove("taken")
-        index.classList.remove("tetromino")
-        color.forEach(c=> index.classList.remove(c))
-    })
-    // reset values for new tetromino
-    // used more than once -- create function?
-    currentPosition = 3
-    current = randomBlock()
-    request = requestAnimationFrame(repeat)
-    paused = false
-}
+const tetrominos = [
+    lTetromino,
+    rlTetromino,
+    iTetromino,
+    oTetromino,
+    sTetromino,
+    tTetromino,
+    zTetromino
+]
 
-document.addEventListener("keydown", (e) => {
-    if (e.key === "s") {
-        handleStart()
-    }
-    if (e.key === "r") {
-        handleRestart()
-    }
-    if (e.key === "p") {
-        handlePause()
-    } 
-})
-
-// auto-down.js
-
-let autoDown = (timestamp) => {
-    
-
-    if (!starttime) {
-        starttime = timestamp;
-    }
-
-    let runtime = timestamp - starttime;
-
-    if (runtime < duration) {
-        request = requestAnimationFrame(autoDown)
-    } else {
-        undraw()
-        if (current[0].some(index => (squares[currentPosition + index + lineWidth].classList.contains("taken")))) {
-            /// if next position is taken
-            // console.log("do not move down")
-            draw()
-        } else {
-            
-            currentPosition += lineWidth
-            draw()
-            //reset values
-            starttime = null
-            auto = null 
-            clock.textContent = `${gameTimer.getTime()}`;
-            request = requestAnimationFrame(repeat)
-        }     
-    }
-}
-
-const repeat = () => {
-    draw()
-    // enable keydown events
-    controls()
-    request = requestAnimationFrame(autoDown)
-}
+const color = [
+    "lTetromino",
+    "rlTetromino",
+    "iTetromino",
+    "oTetromino",
+    "sTetromino",
+    "tTetromino",
+    "zTetromino"
+]
 
 // board.js
-
 const board = document.querySelector(".board")
 let howManytimesDle = 0
 let finishSq = []
@@ -455,9 +342,191 @@ function removeNext(){
     }
 }
 
+// make-your-game.js
+
+const startBtn = document.querySelector("#start-button")
+const scoreDisplay = document.querySelector("#score")
+const pMenu = document.getElementById("pauseMenu")
+const cBtn = document.getElementById("continue")
+const rBtn = document.getElementById("restart")
+// const board = document.querySelector(".board")
+const info = document.querySelector(".info")
+const pauseInfo = document.querySelector(".pauseInfo")
+let rect = board.getBoundingClientRect()
+// position pause menu above board
+let boardStyle = getComputedStyle(board)
+let boardMarginLeft = parseFloat(boardStyle['marginLeft'])
+let rect1 = pMenu.getBoundingClientRect()
+let boardTop = rect.y-rect1.y
+pMenu.style.transform = "translate("+boardMarginLeft+"px, " + boardTop +"px)"
+let request = null
+let auto = null
+let starttime = null
+let duration = 1000
+let gameTimer;
+let paused = false;
+
+const handleStart = () => {
+    // remove click event
+    cBtn.removeEventListener("click", handleStart)
+    rBtn.removeEventListener("click", handleRestart)
+    // do not execute repeat if request is not null 
+    if (request === null) {
+        // remove pause menu using opacity to avoid repaint
+        paused = false
+        pMenu.style.opacity = "0"
+        board.style.opacity = "1"
+        info.style.opacity = "0"
+        pauseInfo.style.opacity = "1"
+        // move div up by previous div
+        let height = info.clientHeight
+        let infoStyle = getComputedStyle(info)
+        let margin = parseFloat(infoStyle['marginBottom'])
+        height += margin
+        pauseInfo.style.transform = "translateY(-" + height + "px)"
+        //continue
+        request = requestAnimationFrame(repeat)
+        if (!gameTimer) {
+            gameTimer = new timer(Date.now());
+            gameTimer.startTimer();
+        } else {
+            gameTimer.continueTimer();
+        }
+    }  
+}
+
+const handlePause = () => {
+    paused = true
+    // create function?
+    cancelAnimationFrame(request)
+    cancelAnimationFrame(auto)
+    request = null
+    auto = null
+    starttime = null
+    // do not allow left right movement when paused
+    document.onkeydown = null
+    // show pause menu using opacity to avoid repaint and add class
+    pMenu.style.opacity = "1"
+    info.style.opacity = "1"
+    pauseInfo.style.opacity = "0"
+    
+    // fade board
+    board.style.opacity = "0.25"
+    if (gameTimer) gameTimer.pauseTimer()
+    // add click events
+    cBtn.addEventListener("click", handleStart)
+    rBtn.addEventListener("click", handleRestart)
+
+}
+const handleRestart = () => {
+    //remove click event
+    cBtn.removeEventListener("click", handleStart)
+    rBtn.removeEventListener("click", handleRestart)
+    let resSquares = Array.from(document.querySelectorAll(".board div"))
+    lives--
+    if (lives === 0) {
+        ScorePart1 = 0
+        document.querySelector("#score").innerHTML = (ScorePart1)
+        lives = 3
+        document.querySelector("#lives").innerHTML = "" + lives
+        // clear board
+        resSquares.slice(0,220).forEach(index => {
+            index.classList.remove("taken")
+            index.classList.remove("tetromino")
+            color.forEach(c=> index.classList.remove(c))
+        })
+        // reset values for new tetromino
+        // used more than once -- create function?
+        request = null
+        auto = null
+        starttime = null
+        gameTimer = null
+        gameTimer = new timer(Date.now()) // coz handleStart will check !gameTimer
+        paused = false
+        currentPosition = 3
+        current= randomBlock()
+        handlePause()
+        return
+    }
+    document.querySelector("#lives").innerHTML = "" + lives
+    cancelAnimationFrame(request)
+    cancelAnimationFrame(auto)
+    request = null
+    auto = null
+    starttime = null
+    gameTimer = null
+    gameTimer = new timer(Date.now()) // coz handleStart will check !gameTimer
+    // remove pause menu and show board
+    pMenu.style.opacity = "0"
+    board.style.opacity = "1"
+    // clear board - last row needs to have class taken
+    resSquares.slice(0,220).forEach(index => {
+        index.classList.remove("taken")
+        index.classList.remove("tetromino")
+        color.forEach(c=> index.classList.remove(c))
+    })
+    // reset values for new tetromino
+    // used more than once -- create function?
+    currentPosition = 3
+    current = randomBlock()
+    request = requestAnimationFrame(repeat)
+    paused = false
+}
+
+document.addEventListener("keydown", throttle((e) => {
+    if (e.key === "s") {
+        handleStart()
+    }
+    if (e.key === "r") {
+        handleRestart()
+    }
+    if (e.key === "p") {
+        handlePause()
+    } 
+}, 16))
+
+// auto-down.js
+
+let autoDown = (timestamp) => {
+    
+
+    if (!starttime) {
+        starttime = timestamp;
+    }
+
+    let runtime = timestamp - starttime;
+
+    if (runtime < duration) {
+        request = requestAnimationFrame(autoDown)
+    } else {
+        undraw()
+        if (current[0].some(index => (squares[currentPosition + index + lineWidth].classList.contains("taken")))) {
+            /// if next position is taken
+            // console.log("do not move down")
+            draw()
+        } else {
+            
+            currentPosition += lineWidth
+            draw()
+            //reset values
+            starttime = null
+            auto = null 
+            clock.textContent = `${gameTimer.getTime()}`;
+            request = requestAnimationFrame(repeat)
+        }     
+    }
+}
+
+const repeat = () => {
+    draw()
+    // enable keydown events
+    controls()
+    request = requestAnimationFrame(autoDown)
+}
+
 // controls.js
 
-currentRotation= current[2]
+let currentRotation= current[2]
 let controls = () => {
     
     document.onkeydown = throttle((e) => { 
@@ -539,78 +608,8 @@ let controls = () => {
                 draw()
             }      
         }
-    }, 200);
+    }, 16);
 }
-
-// tetrominoes.js
-
-// number of squares per line of the board
-const lineWidth = 10
-
-// array of tetromino positions
-const lTetromino = [
-    [1, lineWidth+1, lineWidth*2+1, lineWidth*2+2],
-    [lineWidth, lineWidth+1, lineWidth+2, lineWidth*2],
-    [0, 1, lineWidth+1, lineWidth*2+1],
-    [2, lineWidth, lineWidth+1, lineWidth+2]
-]
-
-const rlTetromino = [
-    [1, lineWidth+1, lineWidth*2+1, lineWidth*2],
-    [0, lineWidth, lineWidth+1, lineWidth+2],
-    [1, 2, lineWidth+1, lineWidth*2+1],
-    [lineWidth, lineWidth+1, lineWidth+2, lineWidth*2+2]
-]
-const iTetromino = [
-    [1, lineWidth+1, lineWidth*2+1, lineWidth*3+1],
-    [lineWidth, lineWidth+1, lineWidth+2, lineWidth+3],
-    [1, lineWidth+1, lineWidth*2+1, lineWidth*3+1],
-    [lineWidth, lineWidth+1, lineWidth+2, lineWidth+3]
-]
-const oTetromino = [
-    [0, 1, lineWidth, lineWidth+1],
-    [0, 1, lineWidth, lineWidth+1],
-    [0, 1, lineWidth, lineWidth+1],
-    [0, 1, lineWidth, lineWidth+1]
-]
-const sTetromino = [
-    [lineWidth+1, lineWidth+2, lineWidth*2, lineWidth*2+1],
-    [0, lineWidth, lineWidth+1, lineWidth*2+1],
-    [lineWidth+1, lineWidth+2, lineWidth*2, lineWidth*2+1],
-    [0, lineWidth, lineWidth+1, lineWidth*2+1]
-]
-const tTetromino = [
-    [1, lineWidth, lineWidth+1, lineWidth+2],
-    [1, lineWidth+1, lineWidth+2, lineWidth*2+1],
-    [lineWidth, lineWidth+1, lineWidth+2, lineWidth*2+1],
-    [1, lineWidth, lineWidth+1, lineWidth*2+1]
-]
-const zTetromino = [
-    [lineWidth, lineWidth+1, lineWidth*2+1, lineWidth*2+2],
-    [1, lineWidth, lineWidth+1, lineWidth*2],
-    [lineWidth, lineWidth+1, lineWidth*2+1, lineWidth*2+2],
-    [1, lineWidth, lineWidth+1, lineWidth*2]
-]
-
-const tetrominos = [
-    lTetromino,
-    rlTetromino,
-    iTetromino,
-    oTetromino,
-    sTetromino,
-    tTetromino,
-    zTetromino
-]
-
-const color = [
-    "lTetromino",
-    "rlTetromino",
-    "iTetromino",
-    "oTetromino",
-    "sTetromino",
-    "tTetromino",
-    "zTetromino"
-]
 
 // timer.js
 
