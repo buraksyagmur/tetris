@@ -119,8 +119,6 @@ squares.slice(0, 20).forEach(index => {
 })
 let lives = 3
 let currentPosition = 3
-let finish = false
-let score = 0
 let ScorePart1 = 0
 let current = randomBlock()
 let frozen = null
@@ -133,6 +131,7 @@ let timeOut = (timestamp) => {
     let runtime = timestamp - startFrozen;
 
     if (runtime < frozenDuration) {
+        draw()
         frozen = requestAnimationFrame(timeOut)
     } else {
         frozen = null
@@ -148,7 +147,6 @@ let timeOut = (timestamp) => {
         current = nextBlock
         removeNext()
         nextBlock = randomBlock()
-        draw()
         request = requestAnimationFrame(repeat)
     }
 }
@@ -156,14 +154,13 @@ let timeOut = (timestamp) => {
 let draw = () => {
     nextBlockDeploy(nextBlock[1])
     if (current[0].some(index => squares[currentPosition + index + lineWidth].classList.contains("taken"))) {
-        if (finishSq.includes(currentPosition) ) {
-            lives -= 1
-            document.querySelector("#lives").innerHTML = "" + lives
-            if (lives == 0) {
-                play = false
-                alert("game over")
-                handleRestart()
-            }
+        if (finishSq.includes(currentPosition)) {
+            
+            handleRestart()
+            // if (lives == 0) {
+            //     alert("game over")
+            //     handleRestart()
+            // }
         } else {
             /// if next position is taken
             if (frozen !== null) {
@@ -440,8 +437,11 @@ const handleRestart = () => {
     cBtn.removeEventListener("click", handleStart)
     rBtn.removeEventListener("click", handleRestart)
     let resSquares = Array.from(document.querySelectorAll(".board div"))
-    lives--
+    lives -= 1
+    document.querySelector("#lives").innerHTML = "" + lives  
     if (lives === 0) {
+        document.querySelector("#lives").innerHTML = "0"
+        alert("game over")
         ScorePart1 = 0
         document.querySelector("#score").innerHTML = (ScorePart1)
         lives = 3
@@ -457,12 +457,13 @@ const handleRestart = () => {
         request = null
         auto = null
         starttime = null
+        frozen = null
+        startFrozen = null
         gameTimer = null
         gameTimer = new timer(Date.now()) // coz handleStart will check !gameTimer
         paused = false
         currentPosition = 3
         current= randomBlock()
-        handlePause()
         return
     }
     document.querySelector("#lives").innerHTML = "" + lives
@@ -471,6 +472,8 @@ const handleRestart = () => {
     request = null
     auto = null
     starttime = null
+    frozen = null
+    startFrozen = null
     gameTimer = null
     gameTimer = new timer(Date.now()) // coz handleStart will check !gameTimer
     // remove pause menu and show board
