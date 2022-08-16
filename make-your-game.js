@@ -124,6 +124,34 @@ let score = 0
 let ScorePart1 = 0
 let current = randomBlock()
 let frozen = null
+// timeout before freezing
+let timeOut = (timestamp) => {
+    if (!startFrozen) {
+        startFrozen = timestamp;
+    }
+
+    let runtime = timestamp - startFrozen;
+
+    if (runtime < frozenDuration) {
+        frozen = requestAnimationFrame(timeOut)
+    } else {
+        frozen = null
+        freeze()
+        cancelAnimationFrame(request)
+        cancelAnimationFrame(auto)
+        request = null
+        auto = null
+        starttime = null
+        startFrozen = null
+        // create new tetromino
+        currentPosition = 3
+        current = nextBlock
+        removeNext()
+        nextBlock = randomBlock()
+        draw()
+        request = requestAnimationFrame(repeat)
+    }
+}
 // draw tetromino onto the board
 let draw = () => {
     nextBlockDeploy(nextBlock[1])
@@ -136,37 +164,23 @@ let draw = () => {
                 alert("game over")
                 handleRestart()
             }
-        }else {
-        /// if next position is taken
-        if (frozen !== null) {
-            current[0].forEach(index => {
-                squares[currentPosition + index].classList.add("tetromino")
-                squares[currentPosition + index].classList.add(color[current[1]])
-            })
         } else {
-            // delay before freezing tetromino - to allow left/right movement and rotation
-            frozen = setTimeout(() => {
-                frozen = null
-                freeze()
-                cancelAnimationFrame(request)
-                cancelAnimationFrame(auto)
-                request = null
-                auto = null
-                starttime = null
-                // create new tetromino
-      // create new tetromino
-      currentPosition = 3
-      current = nextBlock
-      removeNext()
-      nextBlock = randomBlock()
-                request = requestAnimationFrame(repeat)
-            }, 400)
-        }
+            /// if next position is taken
+            if (frozen !== null) {
+                current[0].forEach(index => {
+                    squares[currentPosition + index].classList.add("tetromino")
+                    squares[currentPosition + index].classList.add(color[current[1]])
+                })
+            } else {
+                // delay before freezing tetromino - to allow left/right movement and rotation
+                frozen = requestAnimationFrame(timeOut)
+            }
         }
     } else {
         // cancel freeze time out if piece can now move to next position
-        clearTimeout(frozen)
+        cancelAnimationFrame(frozen)
         frozen = null
+        startFrozen = null
         current[0].forEach(index => {
             squares[currentPosition + index].classList.add("tetromino")
             // squares[currentPosition + index].style.opacity = "1"
@@ -185,11 +199,11 @@ let freeze = () => {
         // ScorePart1++
     })
     // check board for complete lines
-    for (let i = 0; i < squares.length; i++) {
-        let squares2 = Array.from(document.querySelectorAll(".board div"))
-        // console.log(squares2)
+    let squares2 = Array.from(document.querySelectorAll(".board div"))
+    // for (let i = 0; i < squares.length; i++) {
+    //     // console.log(squares2)
         
-        if (checkId(squares2[i].className)) {
+    //     if (checkId(squares2[i].className)) {
             if (removeLine(squares2) != false) {
 
                 
@@ -215,7 +229,7 @@ let freeze = () => {
             } else {
                 // console.log("NO NEED TO REMOVE")
             }
-        }
+        // }
         if (howManytimesDle != 0) {
 
             for (let i = 0; i < (howManytimesDle); i++) {
@@ -236,7 +250,8 @@ let freeze = () => {
             howManytimesDle = 0
         }
         document.querySelector("#score").innerHTML = (ScorePart1)
-    }
+        squares2 = Array.from(document.querySelectorAll(".board div"))
+    // }
     // update squares after line remove/add
     squares = Array.from(document.querySelectorAll(".board div"))
 }
@@ -362,6 +377,8 @@ pMenu.style.transform = "translate("+boardMarginLeft+"px, " + boardTop +"px)"
 let request = null
 let auto = null
 let starttime = null
+let startFrozen = null
+let frozenDuration = 400
 let duration = 1000
 let gameTimer;
 let paused = false;
