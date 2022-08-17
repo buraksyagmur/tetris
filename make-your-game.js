@@ -527,11 +527,12 @@ let autoDown = (timestamp) => {
         } else {
             
             currentPosition += lineWidth
+            clock.textContent = `${gameTimer.getTime()}`;
             draw()
             //reset values
             starttime = null
             auto = null 
-            clock.textContent = `${gameTimer.getTime()}`;
+            
             request = requestAnimationFrame(repeat)
         }     
     }
@@ -614,7 +615,7 @@ let controls = () => {
             handlePause()
         }
         if (e.key === "ArrowDown") { 
-            
+            clock.textContent = `${gameTimer.getTime()}`;
             // check if next position has and taken sqaures
             if (current[0].some(index => (squares[currentPosition + index + lineWidth].classList.contains("taken")))) {
                 /// if next position is taken
